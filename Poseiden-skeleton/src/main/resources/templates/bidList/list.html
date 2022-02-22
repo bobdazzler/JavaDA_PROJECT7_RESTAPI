@@ -4,6 +4,10 @@
 <head>
 <meta charset="utf-8"/>
 <title>Home</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
 <link rel="stylesheet" href="../../css/bootstrap.min.css" >
 </head>
 <body>
@@ -38,6 +42,14 @@
 			</thead>
 			<tbody>
 				<!-- TODO: Show all Bids to the table, the Action column will have Edit & Delete buttons -->
+				<tr th:each="bid : ${bidListOfUser}">
+						<td th:text="${bid.bidListId}"></td>
+						<td th:text="${bid.account}"></td>
+						<td th:text="${bid.type}"></td>
+						<td th:text="${bidQuantity}bid"></td>
+						<td><a th:href="@{/bidList/update/{id}(id=${bidList.bidListId})}"
+							class="btn btn-primary">Edit</a><a th:href="@{/bidList/delete/{id}(id=${bidList.bidListId})}" class="btn btn-danger">Delete</a></td>
+					</tr>
 			</tbody>
 		</table>
 	</div>
