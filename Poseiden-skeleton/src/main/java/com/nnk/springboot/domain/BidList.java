@@ -1,13 +1,11 @@
 package com.nnk.springboot.domain;
-
-import org.springframework.beans.factory.annotation.Required;
-
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
-import java.sql.Timestamp;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+import java.sql.Timestamp;
+@DynamicUpdate
 @Entity
 @Table(name = "bidlist")
 public class BidList {
@@ -22,7 +20,6 @@ public class BidList {
 	@NotBlank(message = "Type is mandatory")
 	@Column(name = "type")
 	String type;
-	@Digits(fraction = 0,integer=13)
 	@Column(name = "bidQuantity")
 	Double bidQuantity;
 	@Column(name = "askQuantity")
@@ -61,6 +58,15 @@ public class BidList {
 	String sourceListId;
 	@Column(name = "side")
 	String side;
+	@Column(name = "user_id")
+	Integer userId;
+	
+	public Integer getBidListId() {
+		return bidListId;
+	}
+	public void setBidListId(Integer bidListId) {
+		this.bidListId = bidListId;
+	}
 	public String getAccount() {
 		return account;
 	}
@@ -75,4 +81,18 @@ public class BidList {
 	}
 	public BidList() {
 	}
+	
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	public BidList(@NotBlank(message = "Account is mandatory") String account,
+			@NotBlank(message = "Type is mandatory") String type, Double bidQuantity) {
+		this.account = account;
+		this.type = type;
+		this.bidQuantity = bidQuantity;
+	}
+	
 }

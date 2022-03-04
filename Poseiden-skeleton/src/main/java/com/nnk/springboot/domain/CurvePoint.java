@@ -1,5 +1,6 @@
 package com.nnk.springboot.domain;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
-
+@DynamicUpdate
 @Entity
 @Table(name = "curvepoint")
 public class CurvePoint {
@@ -27,6 +28,8 @@ public class CurvePoint {
 	Double value;
 	@Column(name = "creationDate")
 	Timestamp creationDate;
+	@Column(name = "user_id")
+	Integer userId;
 	public Integer getCurveId() {
 		return curveId;
 	}
@@ -56,6 +59,13 @@ public class CurvePoint {
 	}
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
+	}
+	
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 	public CurvePoint() {
 	}
