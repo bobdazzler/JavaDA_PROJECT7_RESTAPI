@@ -4,6 +4,8 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.DynamicUpdate;
+@DynamicUpdate
 @Entity
 @Table(name = "users")
 public class User {

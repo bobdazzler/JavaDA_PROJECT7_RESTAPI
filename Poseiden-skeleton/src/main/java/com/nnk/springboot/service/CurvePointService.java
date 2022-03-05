@@ -15,5 +15,7 @@ public class CurvePointService {
 	public CurvePoint saveCurvePoint(CurvePoint curvePoint) {
 		return curvePointRepository.save(curvePoint);
 	}
-	
+	public void deleteCurvePoint(CurvePoint curvePoint) {
+		curvePointRepository.delete(curvePoint);
+	}
 }

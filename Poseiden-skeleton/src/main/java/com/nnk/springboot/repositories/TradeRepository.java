@@ -1,8 +1,13 @@
 package com.nnk.springboot.repositories;
-
 import com.nnk.springboot.domain.Trade;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 
 public interface TradeRepository extends JpaRepository<Trade, Integer> {
+	 @Query("SELECT trade FROM Trade trade WHERE trade.userId = ?1")
+		List<Trade> getTradeListByUserID(int userID);
 }

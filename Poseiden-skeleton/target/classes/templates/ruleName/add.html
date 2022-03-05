@@ -4,6 +4,10 @@
 <head>
 <meta charset="utf-8"/>
 <title>Home</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
 <link rel="stylesheet" href="../../css/bootstrap.min.css" >
 </head>
 <body>
@@ -18,7 +22,38 @@
 			<!--
 			TODO: Create a form to input the values of RuleName, there are 2 buttons: Save data and Cancel to the list RuleName
 			 -->
-
+					 <div>
+					<label>Name</label> <input type="text" th:field="*{name}"
+						placeholder="Name" class="form-control mb-4 col-4" required>
+				</div>
+				<div>
+					<label>Description</label> <input type="text"
+						th:field="*{description}" placeholder="Description"
+						class="form-control mb-4 col-4" required>
+				</div>
+				<div>
+					<label>Json</label><input type="text" th:field="*{json}"
+						placeholder="Json"
+						class="form-control mb-4 col-4" required>
+				</div>
+				<div>
+					<label>Sql</label><input type="text" th:field="*{sql}"
+						placeholder="Sql"
+						class="form-control mb-4 col-4" required>
+				</div>
+				<div>
+					<label>Template</label><input type="text" th:field="*{template}"
+						placeholder="Template"
+						class="form-control mb-4 col-4" required>
+				</div>
+				<div>
+				<label>SqlPart</label><input type="text" th:field="*{sqlPart}"
+						placeholder="SqlPart"
+						class="form-control mb-4 col-4" required>
+				</div>
+				
+				<button type="reset" class="btn btn-danger col-2"> Cancel </button>
+				<button type="submit" class="btn btn-info col-2"> Add RuleName</button>
 		</form>
 	</div>
 

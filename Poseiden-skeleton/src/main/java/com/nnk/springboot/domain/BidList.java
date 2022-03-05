@@ -88,6 +88,13 @@ public class BidList {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+	
+	public Double getBidQuantity() {
+		return bidQuantity;
+	}
+	public void setBidQuantity(Double bidQuantity) {
+		this.bidQuantity = bidQuantity;
+	}
 	public BidList(@NotBlank(message = "Account is mandatory") String account,
 			@NotBlank(message = "Type is mandatory") String type, Double bidQuantity) {
 		this.account = account;

@@ -1,7 +1,6 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 
 
@@ -11,6 +10,8 @@ public class Trade {
     // TODO: Map columns in data table TRADE with corresponding java fields
 	@Id
     @GeneratedValue(strategy= GenerationType.AUTO)
+	@Column(name = "Id")
+	Integer id;
  @Column(name = "TradeId")
 Integer tradeId;
  @Column(name = "account")
@@ -53,6 +54,55 @@ String dealType;
 String sourceListId;
  @Column(name = "side")
 String side;
+ @Column(name = "user_id")
+	Integer userId;
 public Trade() {
 }
+public Trade(String account, String type, Double buyQuantity) {
+	this.account = account;
+	this.type = type;
+	this.buyQuantity = buyQuantity;
+}
+public Integer getId() {
+	return id;
+}
+public void setId(Integer id) {
+	this.id = id;
+}
+public String getAccount() {
+	return account;
+}
+public void setAccount(String account) {
+	this.account = account;
+}
+public String getType() {
+	return type;
+}
+public void setType(String type) {
+	this.type = type;
+}
+public Double getBuyQuantity() {
+	return buyQuantity;
+}
+public void setBuyQuantity(Double buyQuantity) {
+	this.buyQuantity = buyQuantity;
+}
+public Integer getUserId() {
+	return userId;
+}
+public void setUserId(Integer userId) {
+	this.userId = userId;
+}
+public Integer getTradeId() {
+	return tradeId;
+}
+public void setTradeId(Integer tradeId) {
+	this.tradeId = tradeId;
+}
+public Trade(Integer tradeId, String account, String type) {
+	this.tradeId = tradeId;
+	this.account = account;
+	this.type = type;
+}
+
 }

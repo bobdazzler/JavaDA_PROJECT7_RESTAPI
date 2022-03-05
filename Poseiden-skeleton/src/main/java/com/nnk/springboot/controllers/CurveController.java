@@ -1,8 +1,5 @@
 package com.nnk.springboot.controllers;
-
-import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.CurvePoint;
-import com.nnk.springboot.repositories.CurvePointRepository;
 import com.nnk.springboot.service.CurvePointService;
 
 import org.slf4j.Logger;
@@ -36,8 +33,8 @@ public class CurveController {
 		if (request.getSession().getAttribute("userId")!=null) {
 			Integer userId  = (int)request.getSession().getAttribute("userId");
 			List<CurvePoint> curvePointOfUserById = curvePointService.gettingCurvePointByUserId(userId);
-				model.addAttribute("curvePointOfUser", curvePointOfUserById);
-		return new ModelAndView( "curvePoint/list");
+			model.addAttribute("curvePointOfUser", curvePointOfUserById);
+			return new ModelAndView( "curvePoint/list");
 		}
 		return new ModelAndView("home");
 	}
@@ -55,7 +52,7 @@ public class CurveController {
 			curvePoint.setUserId(userId);
 			curvePointService.saveCurvePoint(curvePoint);
 			logger.info("Bid saved is "+curvePoint);		
-		return new ModelAndView("curvePoint/add");
+			return new ModelAndView("curvePoint/add");
 		}
 		return new ModelAndView("home");
 	}
@@ -72,7 +69,7 @@ public class CurveController {
 					logger.info("curvePoint updated");
 				}
 			}
-		return new ModelAndView("curvePoint/update");
+			return new ModelAndView("curvePoint/update");
 		}
 		return new ModelAndView("home");
 	}
@@ -85,17 +82,20 @@ public class CurveController {
 		return new ModelAndView("redirect:/curvePoint/list");
 	}
 
-//	@GetMapping("/curvePoint/delete/{id}")
-//	public String deleteBid(@PathVariable("id") Integer id, Model model, HttpServletRequest request) {
-//		// TODO: Find Curve by Id and delete the Curve, return to Curve list
-//		if (request.getSession().getAttribute("userId")!=null) {
-//			Integer userId  = (int)request.getSession().getAttribute("userId");
-//			List<CurvePoint> curvePointByUserId = curvePointService.gettingCurvePointByUserId(userId);
-//			for(BidList bid: bidListB)
-//				if(bid.getBidListId() == id) {
-//					bidService.deleteBid(bid);
-//					logger.info("a bid is deleted");
-//				}
-//		return "redirect:/curvePoint/list";
-//	}
+	@GetMapping("/curvePoint/delete/{id}")
+	public ModelAndView deleteBid(@PathVariable("id") Integer id, Model model, HttpServletRequest request) {
+		// TODO: Find Curve by Id and delete the Curve, return to Curve list
+		if (request.getSession().getAttribute("userId")!=null) {
+			Integer userId  = (int)request.getSession().getAttribute("userId");
+			List<CurvePoint> curvePointByUserId = curvePointService.gettingCurvePointByUserId(userId);
+			for(CurvePoint curve: curvePointByUserId) {
+				if(curve.getCurveId() == id) {
+					curvePointService.deleteCurvePoint(curve);
+					logger.info("a bid is deleted");
+				}
+				return new ModelAndView("redirect:/curvePoint/list");
+			}	
+		}
+		return new ModelAndView("home");
+	}
 }
