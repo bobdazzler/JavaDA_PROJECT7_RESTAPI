@@ -1,5 +1,7 @@
 package com.nnk.springboot.service;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.nnk.springboot.domain.CurvePoint;
@@ -17,5 +19,15 @@ public class CurvePointService {
 	}
 	public void deleteCurvePoint(CurvePoint curvePoint) {
 		curvePointRepository.delete(curvePoint);
+	}
+	public CurvePoint getCurvePointById(int curvePointId) {
+		Optional <CurvePoint> optional = curvePointRepository.findById(curvePointId);
+		CurvePoint curvePoint = null;
+				if(optional.isPresent()) {
+					curvePoint = optional.get();
+				}else { 
+					throw new RuntimeException(" BidList not found for id :: " + curvePointId);
+				}
+				return curvePoint;
 	}
 }

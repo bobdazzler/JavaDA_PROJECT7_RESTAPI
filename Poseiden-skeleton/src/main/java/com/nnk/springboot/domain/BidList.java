@@ -1,7 +1,11 @@
 package com.nnk.springboot.domain;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.sql.Timestamp;
@@ -11,8 +15,8 @@ import java.sql.Timestamp;
 public class BidList {
     // TODO: Map columns in data table BIDLIST with corresponding java fields
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
-	@Column(name = "BidListId")
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@Column(name = "bidListId")
 	Integer bidListId;
 	@NotBlank(message = "Account is mandatory")
 	@Column(name = "account")
@@ -97,6 +101,13 @@ public class BidList {
 	}
 	public BidList(@NotBlank(message = "Account is mandatory") String account,
 			@NotBlank(message = "Type is mandatory") String type, Double bidQuantity) {
+		this.account = account;
+		this.type = type;
+		this.bidQuantity = bidQuantity;
+	}
+	public BidList(Integer bidListId, @NotBlank(message = "Account is mandatory") String account,
+			@NotBlank(message = "Type is mandatory") String type, Double bidQuantity) {
+		this.bidListId = bidListId;
 		this.account = account;
 		this.type = type;
 		this.bidQuantity = bidQuantity;

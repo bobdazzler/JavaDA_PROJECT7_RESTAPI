@@ -24,20 +24,22 @@
 			 -->
 			 <div>
 					<label>Account</label> <input type="text" th:field="*{account}"
-						placeholder="Account" class="form-control mb-4 col-4" required>
+						placeholder="Account" class="form-control mb-4 col-4">
 				</div>
 				<div>
 					<label>Type</label> <input type="text"
 						th:field="*{type}" placeholder="Type"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
 				</div>
 				<div>
 					<label>BidQuantity</label><input type="text" th:field="*{bidQuantity}"
 						placeholder="Bid Quantity"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
 				</div>
-				<button type="reset" class="btn btn-danger col-2"> Cancel </button>
+				<div>
+				<a class="btn btn-danger btn-sm" href="/bidList/list" th:href="@{/bidList/list}">Cancel</a>
 				<button type="submit" class="btn btn-info col-2"> Add BidList</button>
+				</div>
 		</form>
 	</div>
 

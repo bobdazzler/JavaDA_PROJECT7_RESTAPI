@@ -2,8 +2,13 @@ package com.nnk.springboot.domain;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -14,11 +19,12 @@ import java.sql.Timestamp;
 public class CurvePoint {
 	// TODO: Map columns in data table CURVEPOINT with corresponding java fields
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "Id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	Integer id;
-	@NotNull(message = "must not be null")
-	@Column(name = "CurveId")
+	@Column(name = "curveId")
+	@Min(1)
+	@NotNull(message ="must not be null")
 	Integer curveId;
 	@Column(name = "asOfDate")
 	Timestamp asOfDate;
@@ -90,12 +96,21 @@ public class CurvePoint {
 	public CurvePoint() {
 	}
 
-	public CurvePoint(
-			@NotNull @NotBlank @Length(min = 6, message = "The field must be at least 6 characters") Integer curveId,
-			Double term, Double value) {
+	public CurvePoint(Integer id, @Min(1) @NotNull(message = "must not be null") Integer curveId, Double term,
+			Double value) {
+		this.id = id;
 		this.curveId = curveId;
 		this.term = term;
 		this.value = value;
 	}
+
+	public CurvePoint(@Min(1) @NotNull(message = "must not be null") Integer curveId, Double term, Double value) {
+		this.curveId = curveId;
+		this.term = term;
+		this.value = value;
+	}
+
+	
+
 
 }

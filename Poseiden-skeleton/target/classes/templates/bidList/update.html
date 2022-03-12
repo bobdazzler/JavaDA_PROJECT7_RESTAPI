@@ -35,8 +35,11 @@
 						placeholder="Bid Quantity"
 						class="form-control mb-4 col-4" required>
 				</div>
-				<button type="reset" class="btn btn-danger col-2"> Cancel </button>
-				<button type="submit" class="btn btn-info col-2"> Update BidList</button>
+				<div class="col-sm-12">
+					<input type="hidden" th:field="*{bidListId}">
+					<a class="btn btn-danger btn-sm" href="/bidlist/list">Cancel</a>
+					<input class="btn btn-primary btn-sm" type="submit" value="Update bidList">
+				</div>
 		</form>
 	</div>
 

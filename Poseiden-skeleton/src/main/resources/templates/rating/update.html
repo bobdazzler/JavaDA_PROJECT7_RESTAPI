@@ -20,24 +20,24 @@
 			 -->
 			 <div>
 					<label>MoodysRating</label> <input type="text" th:field="*{moodysRating}"
-						placeholder="MoodysRating" class="form-control mb-4 col-4" required>
+						placeholder="MoodysRating" class="form-control mb-4 col-4">
 				</div>
 				<div>
 					<label>SandPRating</label> <input type="text"
 						th:field="*{sandPRating}" placeholder="SandPRating"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
 				</div>
 				<div>
 					<label>FitchRating</label><input type="text" th:field="*{fitchRating}"
 						placeholder="FitchRating"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
 				</div>
 				<div>
 					<label>Order</label><input type="text" th:field="*{order}"
 						placeholder="Order"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
 				</div>
-				<button type="reset" class="btn btn-danger col-2"> Cancel </button>
+				<a class="btn btn-danger btn-sm" href="/rating/list" th:href="@{/rating/list}">Cancel</a>
 				<button type="submit" class="btn btn-info col-2"> Update Rating</button>
 		</form>
 	</div>

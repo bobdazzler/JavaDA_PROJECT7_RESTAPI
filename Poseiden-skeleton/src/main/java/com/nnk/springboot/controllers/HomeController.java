@@ -1,4 +1,5 @@
 package com.nnk.springboot.controllers;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -17,36 +18,27 @@ import com.nnk.springboot.repositories.UserRepository;
 import com.nnk.springboot.service.CustomUserDetails;
 
 @Controller
-public class HomeController
-{
+public class HomeController {
 	@Autowired
 	UserRepository userService;
-	@RequestMapping("/home")
-	public ModelAndView home(HttpServletRequest request, @AuthenticationPrincipal CustomUserDetails customUserDetials, Model model)
-	{
-		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		authorities.add( new SimpleGrantedAuthority("ADMIN"));
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetail = (UserDetails) auth.getPrincipal();
-		if(userDetail.getAuthorities() == authorities) {
-		User loggedInUser = userService.findByUserName(userDetail.getUsername());
-		model.addAttribute("loggedInUser", loggedInUser);
-		request.getSession().setAttribute("userId", loggedInUser.getId());
-		return new ModelAndView("home");
-		}
-		return new ModelAndView("/bidList/list");
-	}
-	@RequestMapping("/")
-	public ModelAndView adminHome(Model model)
-	{
-		return new ModelAndView( "home");
-	}
-	
-//	@RequestMapping("/admin/home")
-//	public ModelAndView adminHome(Model model)
-//	{
-//		return new ModelAndView( "redirect:/bidList/list");
-//	}
 
+	@RequestMapping("/")
+	public String home(Model model)
+	{
+		return "home";
+	}
+
+	@RequestMapping("/admin/home")
+	public ModelAndView adminHome(HttpServletRequest request, @AuthenticationPrincipal CustomUserDetails customUserDetials,
+			Model model)
+	{
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetail = (UserDetails) auth.getPrincipal();
+				User loggedInUser = userService.findByUserName(userDetail.getUsername());
+				String loggedInUserName = loggedInUser.getUsername();
+				model.addAttribute("username", loggedInUserName);
+				request.getSession().setAttribute("userId", loggedInUser.getId());
+				return new ModelAndView("redirect:/bidList/list");
+	}
 
 }

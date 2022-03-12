@@ -23,21 +23,22 @@
 			TODO: Create a form to input the values of CurvePoint, there are 2 buttons: Save data and Cancel to the list CurvePoint
 			 -->
 			 <div>
-					<label>Curve Id</label> <input type="text" th:field="*{curveId}"
-						placeholder="CurveId" class="form-control mb-4 col-4" required>
+					<label>Curve Id</label> <input type="Number"  th:field="*{curveId}"
+						placeholder="CurveId" class="form-control mb-4 col-4">
 				</div>
 				<div>
-					<label>Term</label> <input type="text"
+					<label>Term</label> <input type="Number" step="0.00"
 						th:field="*{term}" placeholder="Term"
 						class="form-control mb-4 col-4" required>
 				</div>
 				<div>
-					<label>Value</label><input type="text" th:field="*{value}"
+					<label>Value</label><input type="Number" step ="0.00" th:field="*{value}"
 						placeholder="value"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
 				</div>
-				<button type="reset" class="btn btn-danger col-2"> Cancel </button>
 				<button type="submit" class="btn btn-info col-2"> Add CurvePoint</button>
+				<a class="btn btn-danger btn-sm" href="/curvePoint/list" th:href="@{/curvePoint/list}">Cancel</a>
+				
 		</form>
 	</div>
 
