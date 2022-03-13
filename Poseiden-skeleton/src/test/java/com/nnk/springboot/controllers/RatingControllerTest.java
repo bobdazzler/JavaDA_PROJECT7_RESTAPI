@@ -2,6 +2,9 @@ package com.nnk.springboot.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -61,28 +64,55 @@ public class RatingControllerTest {
 		when(sessionMock.getAttribute("userId")).thenReturn(1);
 	}
 	@Test
+	public void testHomeWhenHttpRequestExist() {
+		List<Rating> rating = new ArrayList<>();
+		Rating userRating = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
+		Rating userRating1 = new Rating("Moodys Rating1", "Sand PRating1", "Fitch Rating1", 10);
+		rating.add(userRating1);
+		rating.add(userRating);
+		when(ratingService.getListOfRatingOfAUser(Mockito.anyInt())).thenReturn(rating);
+		ModelAndView modelAndView = ratingController.home(request, model);
+		assertEquals(modelAndView.getViewName(),"rating/list");
+	}
+	@Test
 	public void testShowRatingForm() {
-		
+		Rating userRating = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
+		ModelAndView modelAndView = ratingController.showRatingForm(userRating);
+		assertEquals(modelAndView.getViewName(),"rating/add");
 	}
 
 	@Test
 	public void testValidate() {
-		fail("Not yet implemented");
+		Rating userRating = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
+		when(result.hasErrors()).thenReturn(false);
+		when(ratingService.saveRating(Mockito.any())).thenReturn(userRating);
+		ModelAndView modelAndView = ratingController.validate(userRating, result, request, model);
+		assertEquals(modelAndView.getViewName(),"rating/list");
 	}
 
 	@Test
 	public void testShowUpdateForm() {
-		fail("Not yet implemented");
+		Rating userRating = new Rating(1,"Moodys Rating", "Sand PRating", "Fitch Rating", 10);
+		when(ratingService.getRatingById(Mockito.anyInt())).thenReturn(userRating);
+		ModelAndView modelAndView = ratingController.showUpdateForm(1, request, model);
+		assertEquals(modelAndView.getViewName(),"rating/update");
 	}
 
 	@Test
 	public void testUpdateRating() {
-		fail("Not yet implemented");
+		Rating userRating = new Rating(1,"Moodys Rating", "Sand PRating", "Fitch Rating", 10);
+		when(ratingService.saveRating(Mockito.any())).thenReturn(userRating);
+		ModelAndView modelAndView = ratingController.updateRating(1, userRating, result, request, model);
+		assertEquals(modelAndView.getViewName(),"redirect:/rating/list");
 	}
 
 	@Test
 	public void testDeleteRating() {
-		fail("Not yet implemented");
+		Rating userRating = new Rating(1,"Moodys Rating", "Sand PRating", "Fitch Rating", 10);
+		when(ratingService.getRatingById(Mockito.anyInt())).thenReturn(userRating);
+		doNothing().when(ratingService).deleteRating(userRating);
+		ratingController.deleteRating(1, model);
+		verify(ratingService,times(1)).deleteRating(userRating);
 	}
 
 }

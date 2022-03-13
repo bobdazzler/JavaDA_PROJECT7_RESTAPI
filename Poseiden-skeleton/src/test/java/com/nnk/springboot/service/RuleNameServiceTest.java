@@ -1,11 +1,14 @@
 package com.nnk.springboot.service;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -48,6 +51,21 @@ public class RuleNameServiceTest {
 		doNothing().when(ruleNameRepository).delete(rule);
 		ruleNameService.deleteRuleName(rule);
 		verify(ruleNameRepository,times(1)).delete(rule);
+	}
+	@Test
+	public void testGetRuleNameByIdWhenRuleNameExist() {
+		Optional<RuleName> optional = Optional.of(new RuleName("Rule Name", "Description", "Json", "Template", "SQL", "SQL Part"));
+		RuleName rule = optional.get();
+		when(ruleNameRepository.findById(Mockito.anyInt())).thenReturn(optional);
+		RuleName methodUnderTest = ruleNameService.getRuleNameById(1);
+		assertEquals(methodUnderTest,rule);
+	}
+	@Test
+	public void testGetRuleNameByIdWhenRuleNameIsNull() {
+		Optional<RuleName> optional = null;
+		when(ruleNameRepository.findById(Mockito.anyInt())).thenReturn(optional);
+		assertThrows(RuntimeException.class, () -> ruleNameService.getRuleNameById(1));
+		
 	}
 
 }

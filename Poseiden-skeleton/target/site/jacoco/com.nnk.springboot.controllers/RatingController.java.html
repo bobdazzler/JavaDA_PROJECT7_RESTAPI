@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RatingController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">spring-boot-skeleton</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.controllers</a> &gt; <span class="el_source">RatingController.java</span></div><h1>RatingController.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.controllers;
+import com.nnk.springboot.domain.Rating;
+import com.nnk.springboot.service.RatingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+@Controller
+<span class="fc" id="L21">public class RatingController {</span>
+<span class="fc" id="L22">	Logger logger = LoggerFactory.getLogger(RatingController.class);</span>
+	// TODO: Inject Rating service
+	@Autowired
+	RatingService ratingService;
+
+	@RequestMapping(&quot;/rating/list&quot;)
+	public ModelAndView home(HttpServletRequest request, Model model) {
+		// TODO: find all Rating, add to model
+<span class="fc bfc" id="L30" title="All 2 branches covered.">		if (request.getSession().getAttribute(&quot;userId&quot;) != null) {</span>
+<span class="fc" id="L31">			Integer userId = (int) request.getSession().getAttribute(&quot;userId&quot;);</span>
+<span class="fc" id="L32">			List&lt;Rating&gt; ratingByUser = ratingService.getListOfRatingOfAUser(userId);</span>
+<span class="fc" id="L33">			model.addAttribute(&quot;ratingByUser&quot;, ratingByUser);</span>
+<span class="fc" id="L34">			return new ModelAndView(&quot;rating/list&quot;);</span>
+		}
+<span class="fc" id="L36">		return new ModelAndView(&quot;/&quot;);</span>
+	}
+
+	@GetMapping(&quot;/rating/add&quot;)
+	public ModelAndView showRatingForm(Rating rating) {
+<span class="fc" id="L41">		return new ModelAndView(&quot;rating/add&quot;);</span>
+	}
+
+	@PostMapping(&quot;/rating/validate&quot;)
+	public ModelAndView validate(@Valid @ModelAttribute(&quot;rating&quot;) Rating rating, BindingResult result, HttpServletRequest request, Model model) {
+		// TODO: check data valid and save to db, after saving return Rating list
+<span class="fc" id="L47">		Integer userId = (int) request.getSession().getAttribute(&quot;userId&quot;);</span>
+<span class="fc" id="L48">		rating.setUserId(userId);</span>
+<span class="fc" id="L49">		ratingService.saveRating(rating);</span>
+<span class="fc" id="L50">		logger.info(&quot;Bid saved is &quot; + rating);</span>
+<span class="fc" id="L51">		return new ModelAndView(&quot;rating/list&quot;);</span>
+	}
+
+	@GetMapping(&quot;/rating/update/{id}&quot;)
+	public ModelAndView showUpdateForm(@PathVariable(&quot;id&quot;) Integer id, HttpServletRequest request, Model model) {
+		// TODO: get Rating by Id and to model then show to the form
+<span class="fc" id="L57">		Rating rating = ratingService.getRatingById(id);</span>
+<span class="fc" id="L58">		model.addAttribute(&quot;bidListOfUser&quot;, rating);</span>
+<span class="fc" id="L59">		logger.info(&quot;rating to be updated &quot; + rating);</span>
+<span class="fc" id="L60">		return new ModelAndView(&quot;rating/update&quot;);</span>
+
+	}
+
+	@PostMapping(&quot;/rating/update/{id}&quot;)
+	public ModelAndView updateRating(@PathVariable(&quot;id&quot;) Integer id, @Valid Rating rating, BindingResult result,
+			HttpServletRequest request, Model model) {
+		// TODO: check required fields, if valid call service to update Rating and
+		// return Rating list
+<span class="fc" id="L69">		Integer userId = (int) request.getSession().getAttribute(&quot;userId&quot;);</span>
+<span class="fc" id="L70">		rating.setUserId(userId);</span>
+<span class="fc" id="L71">		ratingService.saveRating(rating);</span>
+<span class="fc" id="L72">		return new ModelAndView(&quot;redirect:/rating/list&quot;);</span>
+	}
+
+	@GetMapping(&quot;/rating/delete/{id}&quot;)
+	public ModelAndView deleteRating(@PathVariable(&quot;id&quot;) Integer id, Model model) {
+		// TODO: Find Rating by Id and delete the Rating, return to Rating list
+<span class="fc" id="L78">		Rating rating = ratingService.getRatingById(id);</span>
+<span class="fc" id="L79">		ratingService.deleteRating(rating);</span>
+<span class="fc" id="L80">		logger.info(&quot;a bid is deleted&quot;);</span>
+<span class="fc" id="L81">		return new ModelAndView(&quot;redirect:/rating/list&quot;);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

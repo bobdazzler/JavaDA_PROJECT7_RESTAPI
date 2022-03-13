@@ -1,9 +1,7 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.service.RuleNameService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -35,16 +31,16 @@ public class RuleNameController {
 		if (request.getSession().getAttribute("userId") != null) {
 			Integer userId = (int) request.getSession().getAttribute("userId");
 			List<RuleName> ruleNameByUserId = ruleNameService.listOfRuleNameByUserId(userId);
-			model.addAttribute("bidListOfUsers", ruleNameByUserId);
-			logger.info("list of Users are " + ruleNameByUserId.toString());
+			model.addAttribute("ruleNameOfAUser", ruleNameByUserId);
+			logger.info("list of ruleNames " + ruleNameByUserId.toString());
 			return new ModelAndView("ruleName/list");
 		}
-		return new ModelAndView("home");
+		return new ModelAndView("/");
 
 	}
 
 	@GetMapping("/ruleName/add")
-	public ModelAndView addRuleForm(@ModelAttribute("ruleName") RuleName ruleName) {
+	public ModelAndView showRuleForm(@ModelAttribute("ruleName") RuleName ruleName) {
 		return new ModelAndView("ruleName/add");
 	}
 
@@ -52,38 +48,32 @@ public class RuleNameController {
 	public ModelAndView validate(@Valid @ModelAttribute("ruleName") RuleName ruleName, BindingResult result,
 			Model model, HttpServletRequest request) {
 		// TODO: check data valid and save to db, after saving return RuleName list
-		if (request.getSession().getAttribute("userId") != null) {
-			Integer userId = (int) request.getSession().getAttribute("userId");
-			ruleName.setUserId(userId);
-			ruleNameService.saveRuleName(ruleName);
-			logger.info("Bid saved is " + ruleName);
-			return new ModelAndView("ruleName/list");
+		if (!result.hasErrors()) {
+		Integer userId = (int) request.getSession().getAttribute("userId");
+		ruleName.setUserId(userId);
+		ruleNameService.saveRuleName(ruleName);
+		logger.info("Bid saved is " + ruleName);
+		return new ModelAndView("ruleName/list");
 		}
-		return new ModelAndView("home");
+		return new ModelAndView("ruleName/add");
 	}
 
 	@GetMapping("/ruleName/update/{id}")
 	public ModelAndView showUpdateForm(@PathVariable("id") Integer id, HttpServletRequest request, Model model) {
 		// TODO: get RuleName by Id and to model then show to the form
-		if (request.getSession().getAttribute("userId") != null) {
-			Integer userId = (int) request.getSession().getAttribute("userId");
-			List<RuleName> ruleNameListByUserId = ruleNameService.listOfRuleNameByUserId(userId);
-			for (RuleName ruleName : ruleNameListByUserId)
-				if (ruleName.getId() == id) {
-					model.addAttribute("bidListOfUser", ruleName);
-					logger.info("bid has been updated");
-				}
-			return new ModelAndView("ruleName/update");
-		}
-		return new ModelAndView("home");
-
+		RuleName ruleName = ruleNameService.getRuleNameById(id);
+		model.addAttribute("bidListOfUser", ruleName);
+		logger.info("bid to be updated " + ruleName);
+		return new ModelAndView("ruleName/update");
 	}
 
 	@PostMapping("/ruleName/update/{id}")
 	public ModelAndView updateRuleName(@PathVariable("id") Integer id, @Valid RuleName ruleName, BindingResult result,
-			Model model) {
+			Model model, HttpServletRequest request) {
 		// TODO: check required fields, if valid call service to update RuleName and
 		// return RuleName list
+		Integer userId = (int) request.getSession().getAttribute("userId");
+		ruleName.setUserId(userId);
 		ruleNameService.saveRuleName(ruleName);
 		return new ModelAndView("redirect:/ruleName/list");
 	}
@@ -91,17 +81,9 @@ public class RuleNameController {
 	@GetMapping("/ruleName/delete/{id}")
 	public ModelAndView deleteRuleName(@PathVariable("id") Integer id, Model model, HttpServletRequest request) {
 		// TODO: Find RuleName by Id and delete the RuleName, return to Rule list
-		if (request.getSession().getAttribute("userId") != null) {
-			Integer userId = (int) request.getSession().getAttribute("userId");
-			List<RuleName> ruleNameListByUserId = ruleNameService.listOfRuleNameByUserId(userId);
-			for (RuleName ruleName : ruleNameListByUserId) {
-				if (ruleName.getId() == id) {
-					ruleNameService.deleteRuleName(ruleName);
-					logger.info("ruleName has been deleted");
-				}
-				return new ModelAndView("redirect:/ruleName/list");
-			}
-		}
-		return new ModelAndView("home");
+		RuleName ruleName = ruleNameService.getRuleNameById(id);
+		logger.info("ruleName to be deleted is " + ruleName);
+		ruleNameService.deleteRuleName(ruleName);
+		return new ModelAndView("redirect:/ruleName/list");
 	}
 }

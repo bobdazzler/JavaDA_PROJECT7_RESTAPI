@@ -1,6 +1,7 @@
 package com.nnk.springboot.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,18 @@ public class RuleNameService {
 		return ruleNameRepository.save(ruleName);
 	}
 	public void deleteRuleName(RuleName ruleName) {
-		ruleNameRepository.delete(ruleName);
-		
+		ruleNameRepository.delete(ruleName);	
+	}
+	
+	public RuleName getRuleNameById(int id) {
+		Optional <RuleName> optional = ruleNameRepository.findById(id);
+		RuleName ruleName = null;
+		if(optional.isPresent()) {
+			ruleName = optional.get();
+		}else{
+			throw new RuntimeException("RuleName not found by "+id);
+		}
+		return ruleName;
 	}
 
 }

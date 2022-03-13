@@ -37,7 +37,7 @@
 						class="form-control mb-4 col-4" required>
 				</div>
 				<div>
-					<label>Sql</label><input type="text" th:field="*{sql}"
+					<label>Sql</label><input type="text" th:field="*{sqlStr}"
 						placeholder="Sql"
 						class="form-control mb-4 col-4" required>
 				</div>
@@ -52,7 +52,7 @@
 						class="form-control mb-4 col-4" required>
 				</div>
 				
-				<button type="reset" class="btn btn-danger col-2"> Cancel </button>
+				<a class="btn btn-danger btn-sm" href="/ruleName/list" th:href="@{/ruleName/list}">Cancel</a>
 				<button type="submit" class="btn btn-info col-2"> Add RuleName</button>
 		</form>
 	</div>

@@ -34,7 +34,7 @@ public class BidListController {
 			Integer userId = (int) request.getSession().getAttribute("userId");
 			List<BidList> bidListByUserId = bidService.gettingBidListByUserId(userId);
 			model.addAttribute("bidListOfUsers", bidListByUserId);
-			logger.info("list of Users are " + bidListByUserId.toString());
+			logger.info("list of Users are " + bidListByUserId);
 			return new ModelAndView("bidList/list");
 		}
 		return new ModelAndView("/");
@@ -64,7 +64,7 @@ public class BidListController {
 		// TODO: get Bid by Id and to model then show to the form
 		BidList bidListById = bidService.getBidListById(id);
 		model.addAttribute("bidList", bidListById);
-		logger.info("bid to be updated " + bidListById.toString());
+		logger.info("bid to be updated " + bidListById);
 		return new ModelAndView("bidList/update");
 
 	}
@@ -77,6 +77,7 @@ public class BidListController {
 		Integer userId = (int) request.getSession().getAttribute("userId");
 		bidList.setUserId(userId);
 		bidService.saveBidList(bidList);
+		logger.info("bid updated " + bidList);
 		return new ModelAndView("redirect:/bidList/list");
 	}
 
@@ -85,7 +86,7 @@ public class BidListController {
 		// TODO: Find Bid by Id and delete the bid, return to Bid list
 		BidList bid = bidService.getBidListById(id);
 		bidService.deleteBid(bid);
-		logger.info("a bid is deleted");
+		logger.info("bid deleted " +bid);
 		return new ModelAndView("redirect:/bidList/list");
 	}
 }
