@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +24,20 @@ import javax.validation.Valid;
 @Controller
 public class TradeController {
 	Logger logger = LoggerFactory.getLogger(TradeController.class);
-	// TODO: Inject Trade service
+	/**
+	 * Inject Trade service
+	 */
 	@Autowired
 	TradeService tradeService;
-
+/**
+ *find all Trade, add to model
+ * @param model
+ * @param request
+ * @return trade/list
+ */
 	@RequestMapping("/trade/list")
 	public ModelAndView home(Model model, HttpServletRequest request) {
-		// TODO: find all Trade, add to model
+		
 		if (request.getSession().getAttribute("userId") != null) {
 			Integer userId = (int) request.getSession().getAttribute("userId");
 			List<Trade> tradeListOfAUser = tradeService.listOfTradeByAUser(userId);
@@ -39,15 +47,27 @@ public class TradeController {
 		}
 		return new ModelAndView("/");
 	}
-
+/**
+ *  show form / path trade/add
+ * @param bid
+ * @return trade/add
+ */
 	@GetMapping("/trade/add")
 	public ModelAndView addUser(Trade bid) {
 		return new ModelAndView("trade/add");
 	}
+	/**
+	 * check data valid and save to db, after saving return Trade list
+	 * @param trade
+	 * @param result
+	 * @param model
+	 * @param request
+	 * @return trade/list if valid, if not valid return trade/add
+	 */
 
 	@PostMapping("/trade/validate")
-	public ModelAndView validate(@Valid Trade trade, BindingResult result, Model model, HttpServletRequest request) {
-		// TODO: check data valid and save to db, after saving return Trade list
+	public ModelAndView validate(@Valid @ModelAttribute("trade") Trade trade, BindingResult result, Model model, HttpServletRequest request) {
+		
 		if (!result.hasErrors()) {
 		Integer userId = (int) request.getSession().getAttribute("userId");
 		trade.setUserId(userId);
@@ -57,30 +77,49 @@ public class TradeController {
 		}
 		return new ModelAndView("trade/add");
 	}
-
+/**
+ * gets Trade by Id add to model then show to the form
+ * @param id
+ * @param model
+ * @param request
+ * @return trade/update
+ */
 	@GetMapping("/trade/update/{id}")
 	public ModelAndView showUpdateForm(@PathVariable("id") Integer id, Model model, HttpServletRequest request) {
-		// TODO: get Trade by Id and to model then show to the form
+		
 		Trade trade = tradeService.getTradeById(id);
-		model.addAttribute("bidListOfUsers", trade);
+		model.addAttribute("trade", trade);
 		logger.info("trade updated " + trade.toString());
 		return new ModelAndView("trade/update");
 	}
-
+/**
+ * check required fields, if valid call service to update Trade and return Trade list
+ * @param id
+ * @param trade
+ * @param result
+ * @param request
+ * @param model
+ * @return trade/list
+ */
 	@PostMapping("/trade/update/{id}")
 	public ModelAndView updateTrade(@PathVariable("id") Integer id, @Valid Trade trade, BindingResult result,
-			HttpServletRequest request,Model model) {
-		// TODO: check required fields, if valid call service to update Trade and return
-		// Trade list
+			HttpServletRequest request,Model model) {		
 		Integer userId = (int) request.getSession().getAttribute("userId");
 		trade.setUserId(userId);
 		tradeService.saveATrade(trade);
+		logger.info("tradeupdated");
 		return new ModelAndView("redirect:/trade/list");
 	}
+	/**
+	 * Find Trade by Id and delete the Trade, return to Trade list
+	 * @param id
+	 * @param model
+	 * @param request
+	 * @return trade/list
+	 */
 
 	@GetMapping("/trade/delete/{id}")
 	public ModelAndView deleteTrade(@PathVariable("id") Integer id, Model model, HttpServletRequest request) {
-		// TODO: Find Trade by Id and delete the Trade, return to Trade list
 		Trade trade = tradeService.getTradeById(id);
 		tradeService.deleteATrade(trade);
 		logger.info("trade updated " + trade.toString());

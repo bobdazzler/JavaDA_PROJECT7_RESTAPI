@@ -1,4 +1,5 @@
 package com.nnk.springboot.controllers;
+
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,61 +16,108 @@ import javax.validation.Valid;
 
 @Controller
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
+	/**
+	 * inject userRepository
+	 */
+	@Autowired
+	private UserRepository userRepository;
 
-    @RequestMapping("/user/list")
-    public ModelAndView home(Model model)
-    {
-        model.addAttribute("users", userRepository.findAll());
-        return new ModelAndView("user/list");
-    }
+	/**
+	 * returns a list of users in db
+	 * 
+	 * @param model
+	 * @return user/list
+	 */
+	@RequestMapping("/user/list")
+	public ModelAndView home(Model model) {
+		model.addAttribute("users", userRepository.findAll());
+		return new ModelAndView("user/list");
+	}
 
-    @GetMapping("/user/add")
-    public ModelAndView addUser(User bid) {
-        return new ModelAndView("user/add");
-    }
+	/**
+	 * shows a path or form to add a user or create a user
+	 * 
+	 * @param bid
+	 * @return user/add path
+	 */
+	@GetMapping("/user/add")
+	public ModelAndView addUser(User bid) {
+		return new ModelAndView("user/add");
+	}
 
-    @PostMapping("/user/validate")
-    public ModelAndView validate(@Valid User user, BindingResult result, Model model) {
-        if (!result.hasErrors()) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode(user.getPassword()));
-            userRepository.save(user);
-            model.addAttribute("users", userRepository.findAll());
-            return new ModelAndView( "redirect:/user/list");
-        }
-        return new ModelAndView("user/add");
-    }
+	/**
+	 * validate a user and then save the user to db
+	 * 
+	 * @param user
+	 * @param result
+	 * @param model
+	 * @return user/list if there is no error, then user/add if there is an error
+	 */
+	@PostMapping("/user/validate")
+	public ModelAndView validate(@Valid User user, BindingResult result, Model model) {
+		if (!result.hasErrors()) {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			user.setPassword(encoder.encode(user.getPassword()));
+			userRepository.save(user);
+			model.addAttribute("users", userRepository.findAll());
+			return new ModelAndView("redirect:/user/list");
+		}
+		return new ModelAndView("user/add");
+	}
 
-    @GetMapping("/user/update/{id}")
-    public ModelAndView showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        user.setPassword("");
-        model.addAttribute("user", user);
-        return new ModelAndView("user/update");
-    }
+	/**
+	 * shows user form for update
+	 * 
+	 * @param id
+	 * @param model
+	 * @return user/update
+	 */
+	@GetMapping("/user/update/{id}")
+	public ModelAndView showUpdateForm(@PathVariable("id") Integer id, Model model) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+		user.setPassword("");
+		model.addAttribute("user", user);
+		return new ModelAndView("user/update");
+	}
 
-    @PostMapping("/user/update/{id}")
-    public ModelAndView updateUser(@PathVariable("id") Integer id, @Valid User user,
-                             BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return new ModelAndView("user/update");
-        }
+	/**
+	 * save updated user to db
+	 * 
+	 * @param id
+	 * @param user
+	 * @param result
+	 * @param model
+	 * @return path user/update if there is an error else return user/list
+	 */
+	@PostMapping("/user/update/{id}")
+	public ModelAndView updateUser(@PathVariable("id") Integer id, @Valid User user, BindingResult result,
+			Model model) {
+		if (result.hasErrors()) {
+			return new ModelAndView("user/update");
+		}
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setId(id);
-        userRepository.save(user);
-        model.addAttribute("users", userRepository.findAll());
-        return new ModelAndView ( "redirect:/user/list");
-    }
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		user.setPassword(encoder.encode(user.getPassword()));
+		user.setId(id);
+		userRepository.save(user);
+		model.addAttribute("users", userRepository.findAll());
+		return new ModelAndView("redirect:/user/list");
+	}
 
-    @GetMapping("/user/delete/{id}")
-    public ModelAndView deleteUser(@PathVariable("id") Integer id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        userRepository.delete(user);
-        model.addAttribute("users", userRepository.findAll());
-        return new ModelAndView( "redirect:/user/list");
-    }
+	/**
+	 * get user by id and delete user
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/user/delete/{id}")
+	public ModelAndView deleteUser(@PathVariable("id") Integer id, Model model) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+		userRepository.delete(user);
+		model.addAttribute("users", userRepository.findAll());
+		return new ModelAndView("redirect:/user/list");
+	}
 }

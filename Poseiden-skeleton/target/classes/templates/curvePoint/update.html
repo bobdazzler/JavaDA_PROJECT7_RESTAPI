@@ -23,20 +23,26 @@
 			 -->
 			  <div>
 					<label>CurveId</label> <input type="text" th:field="*{curveId}"
-						placeholder="Account" class="form-control mb-4 col-4" required>
+						placeholder="Account" class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('curveId')}" th:errors="*{curveId}"></p>
 				</div>
 				<div>
 					<label>Term</label> <input type="text"
-						th:field="*{type}" placeholder="Term"
-						class="form-control mb-4 col-4" required>
+						th:field="*{term}" placeholder="Term"
+						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('term')}" th:errors="*{term}"></p>
 				</div>
 				<div>
 					<label>Value</label><input type="text" th:field="*{value}"
 						placeholder="Value"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></p>
 				</div>
+				<div>
+				<input type="hidden" th:field="*{id}">
 				<button type="reset" class="btn btn-danger col-2"> Cancel </button>
 				<button type="submit" class="btn btn-info col-2"> Update Curve</button>
+				</div>
 		</form>
 	</div>
 

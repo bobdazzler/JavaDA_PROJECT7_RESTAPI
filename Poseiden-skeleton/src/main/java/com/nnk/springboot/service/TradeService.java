@@ -10,17 +10,39 @@ import com.nnk.springboot.repositories.TradeRepository;
 
 @Service
 public class TradeService {
+	/**
+	 * injects tradeRepository
+	 */
 	@Autowired
 	TradeRepository tradeRepository;
+	/**
+	 * 
+	 * @param userId
+	 * @return list of Trade by user id
+	 */
 	public List<Trade> listOfTradeByAUser(int userId){
 		return tradeRepository.getTradeListByUserID(userId);
 	}
+	/**
+	 * 
+	 * @param trade
+	 * @return save trade of param 
+	 */
 	public Trade saveATrade(Trade trade) {
 		return tradeRepository.save(trade);
 	}
+	/**
+	 * delete trade provided in parameter 
+	 * @param trade
+	 */
 	public void deleteATrade(Trade trade) {
 		tradeRepository.delete(trade);
 	}
+	/**
+	 * 
+	 * @param id
+	 * @return trade by id or if not found throw an error
+	 */
 	public Trade getTradeById(int id) {
 		Optional <Trade> optional = tradeRepository.findById(id);
 		Trade trade = null;

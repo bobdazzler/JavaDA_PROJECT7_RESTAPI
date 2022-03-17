@@ -24,32 +24,38 @@
 			 -->
 					 <div>
 					<label>Name</label> <input type="text" th:field="*{name}"
-						placeholder="Name" class="form-control mb-4 col-4" required>
+						placeholder="Name" class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
 				</div>
 				<div>
 					<label>Description</label> <input type="text"
 						th:field="*{description}" placeholder="Description"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
 				</div>
 				<div>
 					<label>Json</label><input type="text" th:field="*{json}"
 						placeholder="Json"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('json')}" th:errors="*{json}"></p>
 				</div>
 				<div>
 					<label>Sql</label><input type="text" th:field="*{sqlStr}"
 						placeholder="Sql"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('sqlStr')}" th:errors="*{sqlStr}"></p>
 				</div>
 				<div>
 					<label>Template</label><input type="text" th:field="*{template}"
 						placeholder="Template"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('template')}" th:errors="*{template}"></p>
 				</div>
 				<div>
 				<label>SqlPart</label><input type="text" th:field="*{sqlPart}"
 						placeholder="SqlPart"
-						class="form-control mb-4 col-4" required>
+						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('sqlPart')}" th:errors="*{sqlPart}"></p>
 				</div>
 				
 				<a class="btn btn-danger btn-sm" href="/ruleName/list" th:href="@{/ruleName/list}">Cancel</a>

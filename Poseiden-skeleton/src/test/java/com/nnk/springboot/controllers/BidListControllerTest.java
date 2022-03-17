@@ -107,7 +107,7 @@ public class BidListControllerTest {
 		Integer id = 1;
 		BidList bid = new BidList(1,"Account Test", "Type Test", 10d);
 		when(bidService.getBidListById(Mockito.anyInt())).thenReturn(bid);
-		ModelAndView modelAndView = bidListController.showUpdateForm(id, model, request);
+		ModelAndView modelAndView = bidListController.showUpdateForm(id, model);
 		assertEquals(modelAndView.getViewName(),"bidList/update");
 	}
 

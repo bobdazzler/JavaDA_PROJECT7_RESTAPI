@@ -1,4 +1,5 @@
 package com.nnk.springboot.service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -6,6 +7,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
 
+/**
+ * 
+ * @author Oghoro Ogheneakpobo this class implements UserDetailsService while
+ *         returning a customUserDetails of a user
+ */
 public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	UserRepository userRepository;
@@ -13,11 +19,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUserName(username);
-		if(user == null) {
+		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
-		return new CustomUserDetails(user);	
-	}
-	
+		return new CustomUserDetails(user);
 	}
 
+}

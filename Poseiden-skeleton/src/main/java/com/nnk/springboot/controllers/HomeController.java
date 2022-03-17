@@ -1,12 +1,9 @@
 package com.nnk.springboot.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -23,22 +20,27 @@ public class HomeController {
 	UserRepository userService;
 
 	@RequestMapping("/")
-	public String home(Model model)
-	{
+	public String home(Model model) {
 		return "home";
 	}
 
+	/**
+	 * home endPoint for the admin
+	 * 
+	 * @param request
+	 * @param customUserDetials
+	 * @param model
+	 * @return bidList/list
+	 */
 	@RequestMapping("/admin/home")
-	public ModelAndView adminHome(HttpServletRequest request, @AuthenticationPrincipal CustomUserDetails customUserDetials,
-			Model model)
-	{
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			UserDetails userDetail = (UserDetails) auth.getPrincipal();
-				User loggedInUser = userService.findByUserName(userDetail.getUsername());
-				String loggedInUserName = loggedInUser.getUsername();
-				model.addAttribute("username", loggedInUserName);
-				request.getSession().setAttribute("userId", loggedInUser.getId());
-				return new ModelAndView("redirect:/bidList/list");
+	public ModelAndView adminHome(HttpServletRequest request,
+			@AuthenticationPrincipal CustomUserDetails customUserDetials, Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+		User loggedInUser = userService.findByUserName(userDetail.getUsername());
+		model.addAttribute("loggedInUser", loggedInUser);
+		request.getSession().setAttribute("userId", loggedInUser.getId());
+		return new ModelAndView("redirect:/bidList/list");
 	}
 
 }

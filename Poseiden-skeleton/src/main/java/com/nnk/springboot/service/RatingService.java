@@ -9,17 +9,39 @@ import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
 @Service
 public class RatingService {
+	/**
+	 * injects ratingRepository
+	 */
 @Autowired
 	RatingRepository ratingRepository;
+/**
+ * 
+ * @param userId
+ * @return a list of rating by user id
+ */
 public List<Rating> getListOfRatingOfAUser(int userId){
 	return ratingRepository.getRatingByUserID(userId);
 }
+/**
+ * 
+ * @param rating
+ * @return save rating object 
+ */
 public Rating saveRating(Rating rating) {
 	return ratingRepository.save(rating);
 }
+/**
+ * delete rating object
+ * @param rating
+ */
 public void deleteRating(Rating rating) {
 	ratingRepository.delete(rating);
 }
+/**
+ * 
+ * @param id
+ * @return get rating by user id  else throw error message if id returns nothing
+ */
 public Rating getRatingById(int id) {
 	Optional <Rating> optional = ratingRepository.findById(id);
 	Rating rating = null;

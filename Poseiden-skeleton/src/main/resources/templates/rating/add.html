@@ -25,21 +25,25 @@
 			 <div>
 					<label>MoodysRating</label> <input type="text" th:field="*{moodysRating}"
 						placeholder="MoodysRating" class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('moodysRating')}" th:errors="*{moodysRating}"></p>
 				</div>
 				<div>
 					<label>SandPRating</label> <input type="text"
 						th:field="*{sandPRating}" placeholder="SandPRating"
 						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('sandPRating')}" th:errors="*{sandPRating}"></p>
 				</div>
 				<div>
 					<label>FitchRating</label><input type="text" th:field="*{fitchRating}"
 						placeholder="FitchRating"
 						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('fitchRating')}" th:errors="*{fitchRating}"></p>
 				</div>
 				<div>
 					<label>Order</label><input type="text" th:field="*{orderNumber}"
 						placeholder="Order"
 						class="form-control mb-4 col-4">
+						<p class="text-danger" th:if="${#fields.hasErrors('orderNumber')}" th:errors="*{orderNumber}"></p>
 				</div>
 				<a class="btn btn-danger btn-sm" href="/rating/list" th:href="@{/rating/list}">Cancel</a>
 				<button type="submit" class="btn btn-info col-2"> Add Rating</button>

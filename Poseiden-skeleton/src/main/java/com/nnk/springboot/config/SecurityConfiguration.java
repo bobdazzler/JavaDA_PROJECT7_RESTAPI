@@ -52,8 +52,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/ruleName/**").authenticated()
 		.antMatchers("/trade/**").authenticated()
 		.antMatchers("admin/home").authenticated()
-		.antMatchers("/bidList/validate").authenticated()
-		.antMatchers("/curvePoint/validate").authenticated()
         .antMatchers("/bidlist/**").hasAnyAuthority("ADMIN","USER")
         .antMatchers("/curvePoint/**").hasAnyAuthority("ADMIN","USER")
         .antMatchers("/rating/**").hasAnyAuthority("ADMIN","USER")
